@@ -3,19 +3,20 @@ $(document).ready(function () {
     $('#start').on('click', function () {
         startGame();
     })
-    $(document).on("click", ".answer-button", function(e) {
-        answers(e);
-       
-      });
+    $(document).on("click", ".answer-button", function () {
+        answer();
+
+    });
 
     var game = {
         incorrectAnswer: 0,
         correctAnswer: 0,
-        notanswered:  0,
-        counter:0,
-        timer:  0,
+        notanswered: 0,
+        counter: 10,
+        timer: 0,
         timerOn: false,
         timerID: '',
+        currentQ: 8,
     }
 
     var questionBank = [
@@ -61,25 +62,53 @@ $(document).ready(function () {
         }
     ]
 
+
     function startGame() {
         console.log("Let's begin the game!");
         $('#start-button').remove();
-        correctAnswer = 0;
-        incorrectAnswer = 0;
-        notanswered = 0;
-        
+        game.correctAnswer = 0;
+        game.incorrectAnswer = 0;
+        game.notanswered = 0;
+        time = setInterval(countDown, 1000);
+
     }
+
+    function timeUp() {
+        clearInterval(timer);
+
+        incorecct++;
+
+    }
+    function countDown() {
+        game.counter--;
+        $("#timer").html(questionBank.counter);
+        if (timer <= 0) {
+            timeup();
+        }
+    }
+
+    function qchoices (choices){
+        let result = "";
+        for(let i=0; i <choices.length; i++){
+            result +=("<button class='answer-button' id='button' data-name='" + choices[i]
+            + "'>" + choices[i] + "</button>")
+        }
+        return result;
+
+    }
+function answers(e){
+    console.log(e);
+    if ($(e.target).attr("data-name") === questionBank[game.currentQ].correctAnswer) {
+        game.correctAnswer++;
+        console.log("correct");
+
+      }
+      else {
+        game.incorrectAnswer++;
+        console.log("incorrect");
+      }
     
-    function timeremaining(){
-
-    }
-
-    function nextQ() {
-        console.log("Time for the next question!");
-        var question = quizQuestions [game.currentQuestion].question;
-        var choices  = quizQuestions [game.currentQuestion].choices;
-
-    }
+} 
 
     function checkingIfTrue() {
         for (var i = 0; i < question.length; i++) {
@@ -87,7 +116,7 @@ $(document).ready(function () {
             if (response == question[i].answer) {
                 correctAnswer++;
                 alert("Correct! Good job!")
-            } 
+            }
             else {
                 incorrectAnswer++;
                 alert("Wrong!");
@@ -95,5 +124,4 @@ $(document).ready(function () {
         }
 
     }
-    
 })
