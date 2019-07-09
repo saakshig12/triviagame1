@@ -1,0 +1,25 @@
+body{
+    text-align: center;
+    margin: 5px;
+    background-color: lightblue;
+}
+
+.header {
+    margin-top: 10px;
+}
+
+button {
+    align-content: center;
+    margin-left: 10px;
+}
+
+h2 {
+    margin: 5px;
+}
+
+.questions {
+    color: black;
+    background-color: peachpuff;
+
+
+}

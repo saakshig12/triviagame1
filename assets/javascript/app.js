@@ -8,7 +8,11 @@ var timer = 10;
 var timerOn = false;
 var timerId;
 
-var trivia = {
+$('#start').on('click', function () {
+    nextQuestion() 
+    })
+
+    var trivia = {
     questions: {
         q1: 'India?',
         q2: 'Singapore?',
@@ -43,39 +47,40 @@ var trivia = {
 
 function startGame() {
     $('#game').show();
-    $('#timer').text(trivia.timer);
+    $('#timer').text(timer);
     $('#start').hide();
     $('#remaining-time').show();
-    trivia.currentSet = 0;
-    trivia.correct = 0;
-    trivia.incorrect = 0;
-    trivia.unanswered = 0;
-    clearInterval(trivia.timerId);
-    trivia.nextQuestion();
+    currentSet = 0;
+    correct = 0;
+    incorrect = 0;
+    unanswered = 0;
+    clearInterval(timerId);
+    nextQuestion();
+    
 }
 
 function timerRunning() {
-    if (trivia.timer > -1 && trivia.currentSet < Object.keys(trivia.questions).length) {
+    if (timer > -1 && currentSet < Object.keys(trivia.questions).length) {
         $('#timer').text(trivia.timer);
-        trivia.timer--;
-        if (trivia.timer === 4) {
+        timer--;
+        if (timer === 4) {
             $('#timer').addClass('last-seconds');
         }
     }
-    else if (trivia.timer === -1) {
-        trivia.unanswered++;
-        trivia.result = false;
-        clearInterval(trivia.timerId);
-        resultId = setTimeout(trivia.guessResult, 1000);
+    else if (timer === -1) {
+        unanswered++;
+        result = false;
+        clearInterval(timerId);
+        resultId = setTimeout(guessResult, 1000);
         $('#results').html('<h3>Out of time! The answer was ' + Object.values(trivia.answers)[trivia.currentSet] + '</h3>');
     }
-    else if (trivia.currentSet === Object.keys(trivia.questions).length) {
+    else if (trivia.currentSet === Object.keys(questions).length) {
 
         $('#results')
             .html('<h3>Thank you for playing!</h3>' +
-                '<p>Correct: ' + trivia.correct + '</p>' +
-                '<p>Incorrect: ' + trivia.incorrect + '</p>' +
-                '<p>Unaswered: ' + trivia.unanswered + '</p>' +
+                '<p>Correct: ' + correct + '</p>' +
+                '<p>Incorrect: ' + incorrect + '</p>' +
+                '<p>Unaswered: ' + unanswered + '</p>' +
                 '<p>Please play again!</p>');
 
         $('#game').hide();
@@ -88,22 +93,22 @@ function guessChecker() {
 
     var resultId;
 
-    var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
+    var currentAnswer = Object.values(answers)[trivia.currentSet];
 
     if ($(this).text() === currentAnswer) {
         $(this).addClass('btn-success').removeClass('btn-info');
 
-        trivia.correct++;
-        clearInterval(trivia.timerId);
-        resultId = setTimeout(trivia.guessResult, 1000);
+        correct++;
+        clearInterval(timerId);
+        resultId = setTimeout(guessResult, 1000);
         $('#results').html('<h3>Correct Answer!</h3>');
     }
     else {
         $(this).addClass('btn-danger').removeClass('btn-info');
 
-        trivia.incorrect++;
-        clearInterval(trivia.timerId);
-        resultId = setTimeout(trivia.guessResult, 1000);
+        incorrect++;
+        clearInterval(timerId);
+        resultId = setTimeout(guessResult, 1000);
         $('#results').html('<h3>Better luck next time! ' + currentAnswer + '</h3>');
     }
 }
@@ -112,23 +117,25 @@ function guessResult() {
     trivia.currentSet++;
     $('.option').remove();
     $('#results h3').remove();
-    trivia.nextQuestion();
+    nextQuestion();
 }
 
 
 
 function nextQuestion() {
 
-    trivia.timer = 10;
+    timer = 10;
     $('#timer').removeClass('last-seconds');
-    $('#timer').text(trivia.timer);
+    $('#timer').text(timer);
 
-    if (!trivia.timerOn) {
-        trivia.timerId = setInterval(trivia.timerRunning, 1000);
-    }
+    if (timerOn) {
+        timerId = setInterval(timerRunning, 1000);
+    } 
 
-    var questionContent = Object.values(trivia.questions)[trivia.currentSet];
+    var questionContent = Object.values(trivi.questions)[trivia.currentSet];
     $('#question').text(questionContent);
+    console.log(questionContent);
+    startGame(); 
 
     var questionOptions = Object.values(trivia.options)[trivia.currentSet];
 
