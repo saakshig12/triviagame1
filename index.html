@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trivia Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header text-center clearfix">
+            <h1 class="text-muted">National animal Trivia games</h1>
+        </div>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <div id="game">
+                    <h2>Guess the national animal of the following countries: </h2>
+                    <p id="remaining-time" class="lead">Remaining Time: <span id="timer"></span></p>
+                    <p id="question" class="lead"></p>
+                </div>
+                <div id="results">
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="black" class="col-4"></div>
+                <div id="choices" class="text-center">
+                    <button id="start" class="btn btn-info btn-lg">Start Game</button>
+                    <div id="options">
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="javascript/app.js"></script>
+
+
+</body>
+
+</html>
