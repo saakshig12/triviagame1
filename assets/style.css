@@ -21,5 +21,13 @@ h2 {
     color: black;
     background-color: peachpuff;
 
+}
+.options {
+    align-items: center;
+}
+
+timer {
+    text-decoration: red;
+    text-decoration-style: solid; 
 
 }
