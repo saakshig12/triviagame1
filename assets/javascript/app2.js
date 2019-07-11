@@ -1,11 +1,10 @@
 $(document).ready(function () {
 
     $('#start').on('click', function () {
+        $(this).hide();
+        counter = setInterval(timer, 1000);
         startGame();
-    })
-    $(document).on("click", ".answer-button", function () {
-        answer();
-
+        showQuestion();
     });
 
     var game = {
@@ -69,48 +68,41 @@ $(document).ready(function () {
         game.correctAnswer = 0;
         game.incorrectAnswer = 0;
         game.notanswered = 0;
-        time = setInterval(countDown, 1000);
+        showQuestion();
+        time = setInterval(count, 1000);
 
+    }
+
+    function count() {
+        timer--;
+        if (count <= 0) {
+            clearInterval(counter);
+            timeUp();
+        }
     }
 
     function timeUp() {
-        clearInterval(timer);
-
-        incorecct++;
-
-    }
-    function countDown() {
-        game.counter--;
-        $("#timer").html(questionBank.counter);
-        if (timer <= 0) {
-            timeup();
+        timer--;
+        if (timer == 0) {
+            resettimer = 10;
+            notanswered++;
+            showQuestion++;
         }
     }
 
-    function qchoices (choices){
-        let result = "";
-        for(let i=0; i <choices.length; i++){
-            result +=("<button class='answer-button' id='button' data-name='" + choices[i]
-            + "'>" + choices[i] + "</button>")
+
+
+
+    function showQuestion() {
+        console.log("Let's begin");
+        for (var i = 0; i < questionBank.length; i++) {
+            option = [];
+            checkIfTrue();
+
         }
-        return result;
-
     }
-function answers(e){
-    console.log(e);
-    if ($(e.target).attr("data-name") === questionBank[game.currentQ].correctAnswer) {
-        game.correctAnswer++;
-        console.log("correct");
 
-      }
-      else {
-        game.incorrectAnswer++;
-        console.log("incorrect");
-      }
-    
-} 
-
-    function checkingIfTrue() {
+    function checkIfTrue() {
         for (var i = 0; i < question.length; i++) {
             var response = window.prompt(questions[i].prompt);
             if (response == question[i].answer) {
@@ -122,6 +114,5 @@ function answers(e){
                 alert("Wrong!");
             }
         }
-
     }
 })
