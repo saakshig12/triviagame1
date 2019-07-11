@@ -90,22 +90,28 @@ $(document).ready(function () {
         }
     }
 
-
-
-
     function showQuestion() {
         console.log("Let's begin");
         for (var i = 0; i < questionBank.length; i++) {
-            option = [];
-            checkIfTrue();
+            $('<p>').text(questionBank[i].question);
+            showOptions();
 
         }
     }
+    function showOptions(){
+        let possibilities = "";
+        for(let i=0; i < options.length; i++){
+            possibilities +=("<button class='answer-button' id='button' data-name='" + option[i]
+            + "'>" + option[i] + "</button>")
+        }
+        checkIfTrue();
+    }
+    
 
     function checkIfTrue() {
         for (var i = 0; i < question.length; i++) {
-            var response = window.prompt(questions[i].prompt);
-            if (response == question[i].answer) {
+            var response = window.prompt(questionBank[i].prompt);
+            if (response == questionBank[i].answer) {
                 correctAnswer++;
                 alert("Correct! Good job!")
             }
