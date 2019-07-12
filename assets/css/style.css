@@ -4,12 +4,7 @@ body{
     background-color: lightblue;
 }
 
-.text-muted{
-	color: blue;
-}
-.last-seconds{
-  color: red;
-}
+
 
 .header {
     margin-top: 10px;
@@ -29,4 +24,7 @@ h2 {
     background-color: peachpuff;
 
 
+}
+#results {
+    display: none; 
 }

@@ -1,66 +1,65 @@
 $(document).ready(function () {
 
-    $('#start').on('click', function () {
-        $(this).hide();
-        counter = setInterval(timer, 1000);
-        startGame();
-        showQuestion();
-    });
-
+    var counter;
+    var countingDown;
     var game = {
         incorrectAnswer: 0,
         correctAnswer: 0,
         notanswered: 0,
         counter: 10,
-        timer: 0,
+        timer: 10,
         timerOn: false,
         timerID: '',
-        currentQ: 8,
+        currentQ: 0,
     }
 
     var questionBank = [
         {
             question: "India?",
-            option: ["Elephant", "Monkey", "Bengal Tiger", "Cheetah"],
+            options: ["Elephant", "Monkey", "Bengal Tiger", "Cheetah"],
             answer: "Bengal Tiger",
         },
         {
             question: "Singapore?",
-            option: ["Merlion", "Cheetah", "Kangaroo", "Chimpanzee"],
+            options: ["Merlion", "Cheetah", "Kangaroo", "Chimpanzee"],
             answer: "Merlion",
         },
         {
             question: 'South Korea?',
-            option: ["Merlion", "Cheetah", "Siberian tiger", "Monkey"],
+            options: ["Merlion", "Cheetah", "Siberian tiger", "Monkey"],
             answer: "Siberian tiger",
         },
         {
             question: "China?",
-            option: ["Merlion", "Cheetah", "Panda", "Rooster"],
+            options: ["Merlion", "Cheetah", "Panda", "Rooster"],
             answer: "Panda",
         },
         {
             question: "Malaysia?",
-            option: ["Tiger", "Cheetah", "Kangaroo", "Monkey"],
+            options: ["Tiger", "Cheetah", "Kangaroo", "Monkey"],
             answer: 'Tiger',
         },
         {
             question: 'Cambodia?',
-            option: ["Merlion", "Cheetah", "Kouprey", "Monkey"],
+            options: ["Merlion", "Cheetah", "Kouprey", "Monkey"],
             answer: 'Kouprey',
         },
         {
             question: "Thailand?",
-            option: ["Elephant", "Cheetah", "Rooster", "Mouse"],
+            options: ["Elephant", "Cheetah", "Rooster", "Mouse"],
             answer: 'Elephant',
         },
         {
             question: "Laos?",
-            option: ["Elepahnt", "Cheetah", "Kangaroo", "Monkey"],
+            options: ["Elephant", "Cheetah", "Kangaroo", "Monkey"],
             answer: 'Elephant',
         }
     ]
 
+    $('#start').on('click', function () {
+        $(this).hide();
+        startGame();
+    });
 
     function startGame() {
         console.log("Let's begin the game!");
@@ -68,57 +67,92 @@ $(document).ready(function () {
         game.correctAnswer = 0;
         game.incorrectAnswer = 0;
         game.notanswered = 0;
-        showQuestion();
-        time = setInterval(count, 1000);
+        showQuestion(0);
+
 
     }
-
+function countDown() {
+    game.timer--;
+    $('#timeRemaining').text("Remaining Time: "+ game.timer);
+    
+}
     function count() {
-        timer--;
-        if (count <= 0) {
-            clearInterval(counter);
-            timeUp();
+        game.timer = 10; 
+        clearInterval(counter);
+        clearInterval(countingDown);
+        game.notanswered++;
+        game.currentQ++;
+        console.log("change q");
+        changeQuestion();
+
+
+    }
+    function changeQuestion () {
+        if (game.currentQ < questionBank.length) {
+            showQuestion(game.currentQ)
+        }
+        else {
+            console.log("yes");
+            resultDisplay(); 
         }
     }
 
-    function timeUp() {
-        timer--;
-        if (timer == 0) {
-            resettimer = 10;
-            notanswered++;
-            showQuestion++;
-        }
-    }
-
-    function showQuestion() {
+    function showQuestion(qNumber) {
         console.log("Let's begin");
-        for (var i = 0; i < questionBank.length; i++) {
-            $('<p>').text(questionBank[i].question);
-            showOptions();
+        counter = setInterval(count, 10000);
+            countingDown = setInterval(countDown, 1000);
 
-        }
+        $('#question').text(questionBank[qNumber].question);
+
+
+        showOptions(qNumber);
+
+
     }
-    function showOptions(){
+    function showOptions(questionNumber) {
         let possibilities = "";
-        for(let i=0; i < options.length; i++){
-            possibilities +=("<button class='answer-button' id='button' data-name='" + option[i]
-            + "'>" + option[i] + "</button>")
-        }
-        checkIfTrue();
-    }
+        for (let i = 0; i < questionBank[questionNumber].options.length; i++) {
+            var option = questionBank[questionNumber].options[i]
+            possibilities += "<button class='answer-button' id='button " + i + "' data-name='" + option
+                + "'>" + option + "</button>"
+
     
 
-    function checkIfTrue() {
-        for (var i = 0; i < question.length; i++) {
-            var response = window.prompt(questionBank[i].prompt);
-            if (response == questionBank[i].answer) {
-                correctAnswer++;
-                alert("Correct! Good job!")
+        }
+        $('#options').html(possibilities);
+        $('.answer-button').on('click', function () {
+            clearInterval(countingDown);
+            clearInterval(counter);
+
+            $('.answer-button').hide();
+            var userAnswer = $(this).attr("data-name");
+            checkIfTrue(userAnswer);
+            game.currentQ++;
+            changeQuestion();
+
+        });
+    }
+
+
+    function checkIfTrue(userAnswer) {
+
+        for (var i = 0; i < questionBank.length; i++) {
+
+            if (userAnswer === questionBank[i].answer) {
+                game.correctAnswer++;
+       
             }
             else {
-                incorrectAnswer++;
-                alert("Wrong!");
+                game.incorrectAnswer++;
+         
             }
         }
+    }
+    function resultDisplay() {
+        $("#results").show();
+        $("#rcorrect-answer").text("Correct Answers: "+ game.correctAnswer);
+        $("#incorrect-answer").text("Incorrect Answers: "+ game.incorrectAnswer);
+        $("#unansweredQ").text("Unanswered Questions: "+ game.notanswered);
+       
     }
 })
